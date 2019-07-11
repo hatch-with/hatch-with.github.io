@@ -36,3 +36,20 @@
   display: flex; 
 }
 
+.chapter-container {
+  margin: auto;
+}
+
+.module-container {
+  /* padding: 10px;
+  display:inline-flex; */
+}
+
+.module-container>a {
+  width: 80%;
+  height:100%;
+}
+
+.module-container>a>img {
+  width:100%;
+}
