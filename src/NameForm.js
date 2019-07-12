@@ -16,7 +16,7 @@ class NameForm extends React.Component {
     }
   
     handleSubmit(event) {
-        this.state.value == 'Select:' ? alert("don't forget your name!") : alert("okay name is " + this.state.value);
+        this.state.value == 'Select:' ? alert("don't forget your name!") : <Chart />;
         // alert('name is ' + this.state.value);
         event.preventDefault();
     }

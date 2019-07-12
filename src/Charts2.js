@@ -16,37 +16,20 @@ export class Charts extends React.Component {
       headers: [],
       oneloaded: false,
       twoloaded: false,
+      active_student: null,
     }
   }
 
+  getData() {
+    this.state.active_student
+  }
   componentDidMount() {
+    // active_student ? this.getData : '';
+
+
     let final = [];
     let all_headers = [];
 
-    // for (let i = 0; i < 4; i++) {
-    //   let link = APIS[i];
-    //   let week_data = [];
-
-    //   fetch(link)
-    //     .then((response) => {
-    //       return response.json()
-    //     }).then((json) => {
-    //       week_data.push(json);
-
-    //       let group = [];
-    //       let group_headers = [];
-    //       for (let x = 1; x < CHAPTERS[i]; x++) {
-    //         let segments = week_data.filter(item => item.chapter == i.toString());
-    //         let header = week_data.filter(item => item.chapter == 'C'+i.toString());
-            
-    //         group.push(segments);
-    //         group_headers.push(header);
-    //       }
-
-    //       final.push(group);
-    //       all_headers.push(group_headers);
-    //     })
-    // }
     
     fetch("https://api.sheety.co/3664fce7-19ab-434d-865c-fbe5034cdfa1")
       .then((response) => {
@@ -135,4 +118,3 @@ export class Charts extends React.Component {
   }
 }
 
-export default Charts;
