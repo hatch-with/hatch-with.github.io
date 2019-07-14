@@ -1,50 +1,57 @@
 import React from 'react';
-import Chart from './Charts2';
+import Chart from './Charts';
 import { thisExpression } from '@babel/types';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import ReactGA from 'react-ga';
 
+ReactGA.initialize('UA-000000-01', {
+  debug: true,
+  titleCase: false,
+  gaOptions: {
+    userId: 123
+  }
+});
+ReactGA.pageview(window.location.pathname + window.location.search);
+
+class RenderChart extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {  
+    return <Chart active_student={this.props.name} active_week={this.props.week} />
+  }
+}
 
 class NameForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {name: 'select', week: 'select', submitted: false};
-  
+      this.toggle= this.toggle.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
       this.handleWeekChange = this.handleWeekChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-
-
+      // this.handleSubmit = this.handleSubmit.bind(this);
     }
   
     handleNameChange(event) {
+				this.setState({submitted: false})
         this.setState({name: event.target.value});
     }
 
     handleWeekChange(event) {
-        this.setState({week: event.target.value});
+				this.setState({submitted: false})
+				this.setState({week: event.target.value});
+				// console.log(this.state.week);
+    }
+    toggle(){
+      this.setState({ submitted: true }); 
     }
   
-    handleSubmit(event) {
-        (this.state.name == 'select') || (this.state.week == 'select') ? this.missingAlert() : this.state.submitted = true;
-        event.preventDefault();
-    }
-
-    missingAlert() {
-        this.state.submitted = false;
-        alert("please fill in both your name and the week number")
-    }
-    renderChart() {
-        return (
-            <div>hi</div>
-            // <Chart active_student={this.state.name} active_week={this.state.week}/>
-        )
-    }
     render() {
       return (
         <div>
             <form>
                 <label>
-                Name<br></br>
                 <select value={this.state.name} onChange={this.handleNameChange}>
                     {/* <option selected value="">Select:</option> */}
                     <option value="select">Select:</option>
@@ -66,16 +73,16 @@ class NameForm extends React.Component {
                     <option value="4">Week 4</option>
                 </select>
             </form>
+						
             {
                 (this.state.name == 'select') || (this.state.week == 'select') ? 
                 ''
                 :
-                <div>
-                    <Router>
-                        <Link to ={`/${this.state.week}`} onClick={this.handleSubmit}>Let's Go!</Link>
-                        <Route path={`/${this.state.week}`} component={this.renderChart} />}
-                    </Router>
-                </div> 
+                <Router>
+                    <Link to ={`/${this.state.week}`} onClick={this.toggle}><button>Let's Go!</button></Link>
+                    {/* <Route exact path="/" component={NameForm} /> */}
+                    <Route path={`/${this.state.week}`} component={() => <RenderChart name={this.state.name} week={this.state.week}/>} submitted={this.state.submitted}/>
+                </Router>
             }
         </div>
       );

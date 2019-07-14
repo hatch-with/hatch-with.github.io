@@ -1,138 +1,119 @@
 import React from 'react';
 import './App.css';
-const CHAPTERS = [5, 3]
-const APIS = [
-  "https://api.sheety.co/3664fce7-19ab-434d-865c-fbe5034cdfa1",
-  "https://api.sheety.co/8a980111-20a6-4c83-bc7a-596335e640c2"
-]
+import ContentPage from './ContentPage';
+import ReactGA from 'react-ga';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+var mod;
+
+const CHAPTERS = [4, 3]
+const APIS = ["https://api.sheety.co/3664fce7-19ab-434d-865c-fbe5034cdfa1",
+"https://api.sheety.co/8a980111-20a6-4c83-bc7a-596335e640c2"]
+
+class RenderInfo extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  componentDidMount() {
+    console.log(this.props.code);
+    // {this.props.context.setState({info: this.props.data})}
+  }
+
+  render() {
+    return (
+      <div>
+        {console.log('entered render info')}
+        <ContentPage data={this.props.info} />
+      </div>
+    )
+  }
+}
 
 export class Charts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weekone: [],
-      weektwo: [],
+      data: [],
       sorted: [],
       headers: [],
-      oneloaded: false,
-      twoloaded: false,
+      loaded: false,
+      info: false,
+      mod: '',
+      clicked: false
+    }
+    this.changeState = this.changeState.bind(this);
+  }
+
+  organiseData() {
+    if (this.state.data) {
+      for (let i = 1; i < CHAPTERS[this.props.active_week-1]; i++) {
+        let segments = this.state.data.filter(item => item.chapter == i.toString());
+        let header = this.state.data.filter(item => item.chapter == 'C'+i.toString())
+        this.state.headers.push(header);
+        this.state.sorted.push(segments)
+      }
+      this.setState({loaded: true});
     }
   }
 
   componentDidMount() {
-    let final = [];
-    let all_headers = [];
+    let API = APIS[this.props.active_week-1];
+    ReactGA.pageview(window.location.pathname + window.location.search);
 
-    // for (let i = 0; i < 4; i++) {
-    //   let link = APIS[i];
-    //   let week_data = [];
-
-    //   fetch(link)
-    //     .then((response) => {
-    //       return response.json()
-    //     }).then((json) => {
-    //       week_data.push(json);
-
-    //       let group = [];
-    //       let group_headers = [];
-    //       for (let x = 1; x < CHAPTERS[i]; x++) {
-    //         let segments = week_data.filter(item => item.chapter == i.toString());
-    //         let header = week_data.filter(item => item.chapter == 'C'+i.toString());
-            
-    //         group.push(segments);
-    //         group_headers.push(header);
-    //       }
-
-    //       final.push(group);
-    //       all_headers.push(group_headers);
-    //     })
-    // }
-    
-    fetch("https://api.sheety.co/3664fce7-19ab-434d-865c-fbe5034cdfa1")
+    fetch(API)
       .then((response) => {
         return response.json()
-      }).then((one) => {
-        this.setState({weekone: one});
-        let group = []
-        
-        for (let i = 1; i < CHAPTERS[0]; i++) {
-          let segments = this.state.weekone.filter(item => item.chapter == i.toString());
-          let header = this.state.weekone.filter(item => item.chapter == 'C'+i.toString())
-          all_headers.push(header);
-          group.push(segments)
-          
-          // if (segments.length> 0) {final.push(segments);}
-        }
-        final.push(group);
-        this.setState({oneloaded: true});
-
-      });
-
-    fetch("https://api.sheety.co/8a980111-20a6-4c83-bc7a-596335e640c2")
-      .then((response) => {
-        return response.json()
-      }).then((two) => {
-        this.setState({weektwo: two});
-        let group = []
-
-        for (let i = 1; i < CHAPTERS[1]; i++) {
-          let segments = this.state.weektwo.filter(item => item.chapter == i.toString());
-          let header = this.state.weektwo.filter(item => item.chapter == 'C'+i.toString())
-          all_headers.push(header);
-          group.push(segments);
-        }
-
-        final.push(group);
-        this.setState({twoloaded: true});
-
-      });
-
-    this.setState({sorted: final});
-    this.setState({headers: all_headers})
+      }).then((json) => {
+        this.setState({data: json});
+        this.organiseData()
+      })
   }
 
+  getInfo(e, code) {
+    // e.stopPropagation();
+    // this.setState({mod: code})
+    mod = code
+    this.setState({mod: 2})    
+    console.log(this.state.mod);
 
-  // renderData() {
-  //   console.log('rendering')
-  //   return this.state.sorted.map((week) => 
-  //     <div key={week} className="week-container">
-  //       {week.map((row) => 
-  //         <div key={row.code} id={row.code} className="module-container">
-  //           <p>{row.code}</p>
-  //           <p>{row.instructions}</p>
-  //         </div>
-  //       )}
-  //     </div>
-  //   )
-  // }
+  }
 
+  changeState() {
+    let state = this.state.clicked
+    this.setState({clicked: !state})
+  }
+  
   renderData() {
-    return this.state.sorted.map((week, index) => 
-      <div key={index} className="week-container" id={index+1}>
-        {week.map((chapter, index) => 
-          <div key={index} className="chapter-container" id={chapter[0].chapter}>
-            {chapter.map((mods, index) => 
-              <div key={index} className="module-container">
-              {/* {mods.code} */}
-                <a href={mods.code}>
-                  <img className="card-img" src={mods.picture}></img>
-                </a> 
-              </div>  
-            )}
+    return ( 
+    <div>
+      {this.state.sorted.map((chapter, index) =>
+        <div key={index} className="chapter-container" id={chapter[0].chapter}>
+          <div style={{display: this.state.clicked ? 'none' : 'block'}} className="chapter-header">{this.state.headers[index][0].title}</div>
+          {chapter.map((mods, index) => 
+            <div key={index} className="module-container">
+            <Link to ={`/${mods.code}`}><img className={`card-img ${mods[this.props.active_student] ? '': 'grey'}`} src={mods.picture} style={{display: this.state.clicked ? 'none' : 'block'}}
+onClick={this.changeState}></img></Link> 
+            <Route path={`/${mods.code}`} component={() => this.state.clicked ? <RenderInfo info={chapter[index]} context={this} /> : '' } />           
           </div>
           )}
-      </div>
+        </div>
+      )}      
+      <button style={{display: this.state.clicked ? 'block' : 'none'}}  onClick={this.changeState}>go back</button>
+    </div>
     )
   }
-
 
   render() {
     return(
       <div>
-        {this.state.oneloaded && this.state.twoloaded ? this.renderData() : <h2>{'Loading'}</h2>}
+        <Router>
+          {this.renderData()}
+        </Router>
       </div>
     )
   }
 }
+
+
 
 export default Charts;

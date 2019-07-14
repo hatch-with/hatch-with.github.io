@@ -61,9 +61,9 @@ class NameForm extends React.Component {
         <Router>
           <div>
             <ul>
-              <li>
+              {/* <li>
                 <Link to="/">Home</Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/about">About</Link>
               </li>
@@ -72,7 +72,7 @@ class NameForm extends React.Component {
 
             <hr />
 
-            <Route exact path="/" component={this.Home} />
+            {/* <Route exact path="/" component={this.Home} /> */}
             <Route path="/about" component={this.About} />
           </div>
         </Router>
