@@ -7,7 +7,6 @@ function App() {
   const content = (
     <header className="App-header">
       <Form />
-      {/* < Charts /> */}
     </header>
   )
 

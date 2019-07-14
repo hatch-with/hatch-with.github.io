@@ -14,15 +14,10 @@ class RenderInfo extends React.Component {
   constructor(props) {
     super(props)
   }
-  componentDidMount() {
-    console.log(this.props.code);
-    // {this.props.context.setState({info: this.props.data})}
-  }
 
   render() {
     return (
       <div>
-        {console.log('entered render info')}
         <ContentPage data={this.props.info} />
       </div>
     )
@@ -74,8 +69,6 @@ export class Charts extends React.Component {
     // this.setState({mod: code})
     mod = code
     this.setState({mod: 2})    
-    console.log(this.state.mod);
-
   }
 
   changeState() {

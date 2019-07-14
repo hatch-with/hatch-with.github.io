@@ -18,7 +18,6 @@ class ContentPage extends React.Component {
   getData() {
     return (
       <div>
-        {console.log('data is here ', this.props.data, 'location is ', this.props.path)}
         <div className="info-container">
           <img className="info-card" src={this.props.data.picture}></img>
           <h5 className="info-title">{this.props.data.title}</h5>

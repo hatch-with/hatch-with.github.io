@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactGA from 'react-ga';
 
 ReactGA.initialize('UA-000000-01', {
-  debug: true,
+  debug: false,
   titleCase: false,
   gaOptions: {
     userId: 123
@@ -41,7 +41,6 @@ class NameForm extends React.Component {
     handleWeekChange(event) {
 				this.setState({submitted: false})
 				this.setState({week: event.target.value});
-				// console.log(this.state.week);
     }
     toggle(){
       this.setState({ submitted: true }); 
@@ -53,7 +52,6 @@ class NameForm extends React.Component {
             <form>
                 <label>
                 <select value={this.state.name} onChange={this.handleNameChange}>
-                    {/* <option selected value="">Select:</option> */}
                     <option value="select">Select:</option>
                     <option value="belle">Belle</option>
                     <option value="fia">Fia</option>
@@ -65,7 +63,6 @@ class NameForm extends React.Component {
                 </select>
                 </label>
                 <select value={this.state.week} onChange={this.handleWeekChange}>
-                    {/* <option selected value="">Select:</option> */}
                     <option value="select">Select:</option>
                     <option value="1">Week 1</option>
                     <option value="2">Week 2</option>
@@ -75,12 +72,11 @@ class NameForm extends React.Component {
             </form>
 						
             {
-                (this.state.name == 'select') || (this.state.week == 'select') ? 
+                (this.state.name === 'select') || (this.state.week === 'select') ? 
                 ''
                 :
                 <Router>
                     <Link to ={`/${this.state.week}`} onClick={this.toggle}><button>Let's Go!</button></Link>
-                    {/* <Route exact path="/" component={NameForm} /> */}
                     <Route path={`/${this.state.week}`} component={() => <RenderChart name={this.state.name} week={this.state.week}/>} submitted={this.state.submitted}/>
                 </Router>
             }
