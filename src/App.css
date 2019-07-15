@@ -1,0 +1,80 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* .week-container {
+  display: flex; 
+} */
+
+
+.module-container {
+  margin: auto;
+  padding: 10px;
+  display:inline-flex;
+  max-width: 150px;
+}
+
+.module-container>a {
+  height:100%;
+}
+
+.module-container>a>img {
+  width:100%;
+}
+
+.info-container {
+  margin-left: -80px;
+  max-width: 300px;
+}
+
+.info-card {
+  max-width: 240px;
+}
+
+.info-container > p {
+  overflow-wrap: break-word;
+  font-size: 14px;
+}
+
+.info-container > p > a {
+  color: lightblue
+}
+
+.instructions-image {
+  max-height: 100px;
+}
+
+.card-img.grey {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
