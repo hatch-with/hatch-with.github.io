@@ -58,14 +58,21 @@
 }
 
 .info-card {
-  max-width: 180px;
+  max-width: 240px;
 }
 
 .info-container > p {
-  overflow: auto;
+  overflow-wrap: break-word;
   font-size: 14px;
 }
 
+.info-container > p > a {
+  color: lightblue
+}
+
+.instructions-image {
+  max-height: 100px;
+}
 
 .card-img.grey {
   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */

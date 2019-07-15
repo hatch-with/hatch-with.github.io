@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactGA from 'react-ga';
 import {withRouter} from 'react-router-dom';
+import Linkify from 'react-linkify';
 
 class ContentPage extends React.Component {
   constructor(props) {
@@ -20,9 +21,10 @@ class ContentPage extends React.Component {
       <div>
         <div className="info-container">
           <img className="info-card" src={this.props.data.picture}></img>
-          <h5 className="info-title">{this.props.data.title}</h5>
-          <p><u>Instructions:</u> {this.props.data.instructions}</p>
-          <p><u>Completion requirement:</u> {this.props.data.completionRequirement}</p>
+          {/* <h5 className="info-title">{this.props.data.title}</h5> */}
+          {this.props.data.instructions ? <p><strong><u>Instructions:</u></strong> <Linkify>{this.props.data.instructions}</Linkify></p> : ''}
+          {this.props.data.instructionsImage ? <img src={this.props.data.instructionsImage} className="instructions-image"></img>: ''}
+          <p><strong><u>Completion requirement:</u></strong> {this.props.data.completionRequirement}</p>
         </div>
       </div>
     )

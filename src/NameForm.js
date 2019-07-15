@@ -4,7 +4,7 @@ import { thisExpression } from '@babel/types';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactGA from 'react-ga';
 
-ReactGA.initialize('UA-000000-01', {
+ReactGA.initialize('UA-143284229-01', {
   debug: false,
   titleCase: false,
   gaOptions: {
@@ -19,14 +19,19 @@ class RenderChart extends React.Component {
   }
 
   render() {  
-    return <Chart active_student={this.props.name} active_week={this.props.week} />
+    return  (
+      <div>
+     {console.log(this.props.api)}
+    <Chart active_student={this.props.name} active_week={this.props.week} data={this.props.data}/> 
+    </div>
+    )
   }
 }
 
 class NameForm extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {name: 'select', week: 'select', submitted: false};
+      this.state = {name: 'select', week: 'select', submitted: false, data: []};
       this.toggle= this.toggle.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
       this.handleWeekChange = this.handleWeekChange.bind(this);
@@ -45,6 +50,16 @@ class NameForm extends React.Component {
     toggle(){
       this.setState({ submitted: true }); 
     }
+
+    componentWillMount() {
+      fetch("https://api.sheety.co/bf043b2f-df70-4bab-8f9c-bc87a9d929c8")
+      .then((response) => {
+        return response.json()
+      }).then((json) => {
+        this.setState({data: json});
+        console.log(this.state.data)
+      })
+    }
   
     render() {
       return (
@@ -53,21 +68,12 @@ class NameForm extends React.Component {
                 <label>
                 <select value={this.state.name} onChange={this.handleNameChange}>
                     <option value="select">Select:</option>
-                    <option value="belle">Belle</option>
-                    <option value="fia">Fia</option>
-                    <option value="joshua">Joshua</option>
-                    <option value="kiefe">Kiefe</option>
-                    <option value="syafii">Syafii</option>
-                    <option value="syed">Syed</option>
-                    <option value="wanNing">Wan Ning</option>
+                    {this.state.data.map((student)=><option value={student.students_lower} key={student.students_lower}>{student.students}</option>)}
                 </select>
                 </label>
                 <select value={this.state.week} onChange={this.handleWeekChange}>
                     <option value="select">Select:</option>
-                    <option value="1">Week 1</option>
-                    <option value="2">Week 2</option>
-                    <option value="3">Week 3</option>
-                    <option value="4">Week 4</option>
+                    {this.state.data.map((info) => info.apis ? <option value={info.active_weeks}>{`Week ${info.active_weeks}`}</option> : '')}
                 </select>
             </form>
 						
@@ -76,8 +82,8 @@ class NameForm extends React.Component {
                 ''
                 :
                 <Router>
-                    <Link to ={`/${this.state.week}`} onClick={this.toggle}><button>Let's Go!</button></Link>
-                    <Route path={`/${this.state.week}`} component={() => <RenderChart name={this.state.name} week={this.state.week}/>} submitted={this.state.submitted}/>
+                    <Link to ={`/${this.state.name}/${this.state.week}`} onClick={this.toggle}><button>Let's Go!</button></Link>
+                    <Route path={`/${this.state.name}/${this.state.week}`} component={() => <RenderChart name={this.state.name} week={this.state.week} data={this.state.data} />} />
                 </Router>
             }
         </div>
