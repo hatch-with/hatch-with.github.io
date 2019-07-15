@@ -4,7 +4,7 @@ import { thisExpression } from '@babel/types';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ReactGA from 'react-ga';
 
-ReactGA.initialize('UA-000000-01', {
+ReactGA.initialize('UA-143284229-01', {
   debug: false,
   titleCase: false,
   gaOptions: {
