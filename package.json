@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://hatch-with.github.io",
   "dependencies": {
+    "gh-pages": "^2.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-ga": "^2.6.0",
