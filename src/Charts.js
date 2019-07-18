@@ -44,7 +44,7 @@ export class Charts extends React.Component {
   organiseData() {
     if (this.state.data) {
       const CHAPTERS = this.props.data.filter(item => item.chapters);
-      for (let i = 1; i < CHAPTERS[this.props.active_week-1].chapters; i++) {
+      for (let i = 1; i < CHAPTERS[this.props.order-1].chapters; i++) {
         let segments = this.state.data.filter(item => item.chapter == i.toString());
         let header = this.state.data.filter(item => item.chapter == 'C'+i.toString())
         this.state.headers.push(header);
@@ -57,7 +57,7 @@ export class Charts extends React.Component {
   componentDidMount() {
     const APIS = this.props.data.filter(item => item.apis)
 
-    let API = APIS[this.props.active_week-1].apis;
+    let API = APIS[this.props.order-1].apis;
     ReactGA.pageview(window.location.pathname + window.location.search);
 
     fetch(API)
@@ -94,7 +94,7 @@ onClick={this.changeState}></img></Link>
           )}
         </div>
       )}      
-      <Link to ={`/${this.props.active_student}/${this.props.active_week}`}><button style={{display: this.state.clicked ? 'block' : 'none'}}  onClick={this.changeState}>go back</button></Link>
+      <Link to ={`/${this.props.active_student}/${this.props.order}`}><button style={{display: this.state.clicked ? 'block' : 'none'}}  onClick={this.changeState}>go back</button></Link>
     </div>
     )
   }

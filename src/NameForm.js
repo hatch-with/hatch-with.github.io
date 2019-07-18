@@ -21,8 +21,8 @@ class RenderChart extends React.Component {
   render() {  
     return  (
       <div>
-     {console.log(this.props.api)}
-    <Chart active_student={this.props.name} active_week={this.props.week} data={this.props.data}/> 
+     {/* {console.log(this.props.data)} */}
+    <Chart active_student={this.props.name} order={this.props.week} data={this.props.data}/> 
     </div>
     )
   }
@@ -45,7 +45,9 @@ class NameForm extends React.Component {
 
     handleWeekChange(event) {
 				this.setState({submitted: false})
-				this.setState({week: event.target.value});
+        this.setState({week: event.target.value});        
+        this.setState({url: this.state.data[event.target.value-1].url})
+
     }
     toggle(){
       this.setState({ submitted: true }); 
@@ -73,7 +75,7 @@ class NameForm extends React.Component {
                 </label>
                 <select value={this.state.week} onChange={this.handleWeekChange}>
                     <option value="select">Select:</option>
-                    {this.state.data.map((info) => info.apis ? <option value={info.active_weeks}>{`Week ${info.active_weeks}`}</option> : '')}
+                    {this.state.data.map((info, index) => info.apis ? <option key={index} value={info.week_order}>{`${info.dropdown_title}`}</option> : '')}
                 </select>
             </form>
 						
@@ -82,8 +84,8 @@ class NameForm extends React.Component {
                 ''
                 :
                 <Router>
-                    <Link to ={`/${this.state.name}/${this.state.week}`} onClick={this.toggle}><button>Let's Go!</button></Link>
-                    <Route path={`/${this.state.name}/${this.state.week}`} component={() => <RenderChart name={this.state.name} week={this.state.week} data={this.state.data} />} />
+                    <Link to ={`/${this.state.name}/${this.state.url}`} onClick={this.toggle}><button>Let's Go!</button></Link>
+                    <Route path={`/${this.state.name}/${this.state.url}`} component={() => <RenderChart name={this.state.name} week={this.state.week} data={this.state.data} />} />
                 </Router>
             }
         </div>
