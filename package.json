@@ -9,7 +9,7 @@
     "react-ga": "^2.6.0",
     "react-linkify": "^1.0.0-alpha",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "sheetdb-js": "^1.0.3"
   },
   "scripts": {
